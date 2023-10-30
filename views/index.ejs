@@ -1,0 +1,96 @@
+
+<%- include("partials/header.ejs") %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<% if (locals.renderType) { %>
+
+    <!-- Render Daily List -->
+    <% if (renderType === "daily") {  %>  
+        <h3>Daily Tasks</h3>
+ 
+        <form name="updateDailyItems" target="#here" method="post"action="/updateDailyItems" method="POST">
+
+            <% if (locals.toDoItems && locals.completionStatus) { %>
+                <% for(var i=0; i<toDoItems.length; i++) { %>
+                       
+                        <% if (completionStatus[i] === 1) {  %>
+                            <!-- When checkbox is checked, form is submitted, index.js is refreshed with to do item scratched -->
+                            <p>
+                                <!-- <input type="hidden" name="checkTask[<%= i %>]" value="0"> -->
+                                <!-- <input type="checkbox" checked name = "checkTask[<%= i %>]" value = "1" onchange="this.form.submit()" >  -->
+                                <input type="checkbox" checked name = "checkTask" value = "<%= i %>" onchange="this.form.submit()" > 
+                                <s> <%= toDoItems[i] %> </s>
+                        <% } else { %>
+                             <!-- When checkbox is unchecked, form is submitted, index.js is refreshed with to do item unscratched -->
+                            <p>
+                                <!-- <input type="hidden" name= "checkTask[<%= i %>]" value="0"> -->
+                                <!-- <input type="checkbox" name = "checkTask[<%= i %>]" value = "1" onchange="this.form.submit()" >  -->
+                                <input type="checkbox" name = "checkTask" value = "<%= i %>" onchange="this.form.submit()" > 
+                                    <%= toDoItems[i] %>
+                        <% } %>
+                           </p>
+                <% } %>
+            <% } %>
+            
+            <input type="text" name="todoItem" placeholder=" Add new task" >
+            <input type="submit">
+        </form>
+     <!-- Render Work List -->
+    <% } else { %> 
+        <h3>Work Tasks</h3>
+
+        <form name="updateWorkItems" target="#here" method="post"action="/updateWorkItems" method="POST">
+
+            <% if (locals.toDoItems && locals.completionStatus) { %>
+                <% for(var i=0; i<toDoItems.length; i++) { %>
+
+                    <% if (completionStatus[i] === 1) {  %>
+                        <!-- When checkbox is checked, form is submitted, index.js is refreshed with to do item scratched -->
+                        <p>
+                            <!-- <input type="hidden" name="checkTask[<%= i %>]" value="0"> -->
+                            <!-- <input type="checkbox" checked name = "checkTask[<%= i %>]" value = "1" onchange="this.form.submit()" >  -->
+                            <input type="checkbox" checked name = "checkTask" value = "<%= i %>" onchange="this.form.submit()" > 
+                            <s> <%= toDoItems[i] %> </s>
+                    <% } else { %>
+                         <!-- When checkbox is unchecked, form is submitted, index.js is refreshed with to do item unscratched -->
+                        <p>
+                            <!-- <input type="hidden" name= "checkTask[<%= i %>]" value="0"> -->
+                            <!-- <input type="checkbox" name = "checkTask[<%= i %>]" value = "1" onchange="this.form.submit()" >  -->
+                            <input type="checkbox" name = "checkTask" value = "<%= i %>" onchange="this.form.submit()" > 
+                                <%= toDoItems[i] %>
+                    <% } %>
+                       </p>
+
+                <% } %>
+            <% } %>
+
+            <input type="text" name="todoItem" placeholder="Add new task">
+            <input type="submit"> 
+        </form>
+    <% } %>
+<% } %>
+         
+
+
+<script type="text/javascript">
+    // Using jQuery.
+    
+    $(function() {
+        $('form').each(function() {
+            $(this).find('input').keypress(function(e) {
+                // Enter pressed?
+                if(e.which == 10 || e.which == 13) {
+                    this.form.submit();
+                }
+            });
+    
+            $(this).find('input[type=submit]').hide();
+        });
+    });
+
+</script>
+
+
+
+<%- include("partials/footer.ejs") %>
